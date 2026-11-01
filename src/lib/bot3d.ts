@@ -138,6 +138,8 @@ export class Bot implements Layer {
   private squashV = 0;
   private screen = { x: 0, y: 0, r: 40 };
   private fx = new Fx();
+  /** Called whenever a reaction actually starts (sounds, haptics). */
+  onAct?: (kind: Act, byUser: boolean) => void;
   // behaviour state
   private act: { kind: Act; t: number } | null = null;
   private lastAct: Act | null = null;
@@ -282,6 +284,7 @@ export class Bot implements Layer {
     if (cur && !byUser && USER_ACTS.has(cur.kind)) return; // never interrupt the user's moment
     this.act = { kind, t: 0 };
     this.lastAct = kind;
+    this.onAct?.(kind, byUser);
     this.idleIn = rnd(7, 15);
     const burst = ACTS[kind].burst;
     if (burst === 'hearts') this.fx.hearts(this.screen.x, this.screen.y - this.screen.r * 0.7);

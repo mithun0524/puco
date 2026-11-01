@@ -133,6 +133,7 @@ The keys on the top rail:
 |---|---|
 | Lock | Pins the widget in place (no dragging) |
 | Menu bar | Switches between a popup that opens from the menu bar and hides on blur, and a window floating on the desktop |
+| Sounds | Turns Puco's sounds on or off (off by default) |
 | Click-through | Lets clicks pass through the widget. Turn it off from the tray menu; it isn't kept between launches |
 | Hide | Hides the widget; bring it back from the tray |
 
@@ -148,6 +149,11 @@ Tray menu → **Move to primary screen** rescues a widget left on an unplugged m
 | Stroke it with the cursor | Enjoys it (floating hearts) |
 | Rest the cursor on it | Gets curious |
 | Leave it alone | Yawns, hums, stretches, dozes off; sleepier at night |
+
+**Sound and touch.** With sounds on, every reaction has its own tiny synthesised sound (a giggle trill,
+a boing on the backflip, a purr when you pet it) and the island plays a soft chime on a heads-up.
+Puco stays silent when it's idling on its own. On a Mac, poking or petting the robot also gives a light
+tap through the Force Touch trackpad.
 
 ### The notch island (macOS)
 

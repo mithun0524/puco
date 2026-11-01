@@ -171,6 +171,28 @@ fn make_island_panel(win: &WebviewWindow) {
     }
 }
 
+/// A light tap on the Force Touch trackpad. macOS only plays it while a finger is on the trackpad,
+/// so it lands exactly when the user clicks or strokes the robot. No-op elsewhere.
+#[tauri::command]
+fn haptic(app: AppHandle) {
+    #[cfg(target_os = "macos")]
+    let _ = app.run_on_main_thread(|| {
+        use objc2::{msg_send, runtime::{AnyClass, AnyObject}};
+        const GENERIC: isize = 0; // NSHapticFeedbackPatternGeneric
+        const NOW: usize = 1; // NSHapticFeedbackPerformanceTimeNow
+        let Some(cls) = AnyClass::get(c"NSHapticFeedbackManager") else { return };
+        // SAFETY: main thread; defaultPerformer is a shared AppKit singleton.
+        unsafe {
+            let performer: *mut AnyObject = msg_send![cls, defaultPerformer];
+            if !performer.is_null() {
+                let _: () = msg_send![performer, performFeedbackPattern: GENERIC, performanceTime: NOW];
+            }
+        }
+    });
+    #[cfg(not(target_os = "macos"))]
+    let _ = app;
+}
+
 #[tauri::command]
 fn island_front(window: WebviewWindow) {
     pin_island(&window);
@@ -270,7 +292,7 @@ fn main() {
                 .with_denylist(&["island"]) // island is always re-pinned to the notch
                 .build(),
         )
-        .invoke_handler(tauri::generate_handler![set_pref, kill_process, reveal_path, island_front, island_log, notch])
+        .invoke_handler(tauri::generate_handler![set_pref, kill_process, reveal_path, island_front, island_log, notch, haptic])
         .setup(|app| {
             // Widget, not an app: no Dock icon on macOS.
             #[cfg(target_os = "macos")]
