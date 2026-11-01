@@ -13,6 +13,15 @@ macOS · Windows · Linux &nbsp;—&nbsp; built with Tauri 2, Svelte 5 and Three
 
 </div>
 
+<p align="center">
+  <img src="docs/widget.png" width="340" alt="The Puco widget: a white robot with a glowing face above LED screens for CPU, memory and temperature, and a list of the busiest processes" />
+</p>
+
+<p align="center">
+  <img src="docs/island-glance.png" width="520" alt="Notch island glance: the robot face left of the camera and a charging 76% readout to its right" /><br />
+  <img src="docs/island-heads-up.png" width="520" alt="Notch island heads-up below the camera: CPU has been maxed out, with Quit and Dismiss buttons" />
+</p>
+
 ---
 
 ## Contents
