@@ -70,6 +70,16 @@ The builds aren't code-signed yet, so each OS warns on first launch:
 - **macOS:** open Puco once, then go to System Settings → Privacy & Security and click **Open Anyway**.
 - **Windows:** on "Windows protected your PC", click **More info** → **Run anyway**.
 
+### Verify a download
+
+Every installer is built by GitHub Actions from this repo's source, never on someone's laptop, and
+from v0.1.2 on each one carries a signed build attestation. To check that a file came from this repo's
+build workflow and hasn't been altered:
+
+```bash
+gh attestation verify Puco_<version>_universal.dmg --repo mithun0524/puco
+```
+
 ## Build from source
 
 ### Prerequisites
