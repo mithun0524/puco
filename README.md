@@ -11,16 +11,13 @@ plus a notch island that only speaks up when something needs you.
 
 macOS · Windows · Linux &nbsp;—&nbsp; built with Tauri 2, Svelte 5 and Three.js
 
+[Download for macOS](https://github.com/mithun0524/puco/releases/latest) &nbsp;·&nbsp; [Build from source](#build-from-source)
+
+<br />
+
+<img src="docs/widget.png" width="320" alt="The Puco widget: a white robot with a glowing face above LED screens for CPU, memory and temperature, and a list of the busiest processes" />
+
 </div>
-
-<p align="center">
-  <img src="docs/widget.png" width="340" alt="The Puco widget: a white robot with a glowing face above LED screens for CPU, memory and temperature, and a list of the busiest processes" />
-</p>
-
-<p align="center">
-  <img src="docs/island-glance.png" width="520" alt="Notch island glance: the robot face left of the camera and a charging 76% readout to its right" /><br />
-  <img src="docs/island-heads-up.png" width="520" alt="Notch island heads-up below the camera: CPU has been maxed out, with Quit and Dismiss buttons" />
-</p>
 
 ---
 
@@ -130,6 +127,16 @@ Tray menu → **Move to primary screen** rescues a widget left on an unplugged m
 | Leave it alone | Yawns, hums, stretches, dozes off; sleepier at night |
 
 ### The notch island (macOS)
+
+<p align="center">
+  <img src="docs/island-glance.png" width="520" alt="Notch island glance: the robot face left of the camera and a charging 76% readout to its right" /><br />
+  <sub>Glance: a quick status beside the camera, here charging at 76%</sub>
+</p>
+
+<p align="center">
+  <img src="docs/island-heads-up.png" width="520" alt="Notch island heads-up below the camera: CPU has been maxed out, with Quit and Dismiss buttons" /><br />
+  <sub>Heads-up: the cause and a fix, shown below the notch line</sub>
+</p>
 
 | State | When | Shows |
 |---|---|---|
