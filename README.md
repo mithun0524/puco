@@ -9,9 +9,13 @@
 CPU, memory, temperature and battery on a white vinyl robot with LED gauges,
 plus a notch island that only speaks up when something needs you.
 
+[![Latest release](https://img.shields.io/github/v/release/mithun0524/puco?label=release)](https://github.com/mithun0524/puco/releases/latest)
+[![Build](https://github.com/mithun0524/puco/actions/workflows/build.yml/badge.svg)](https://github.com/mithun0524/puco/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 macOS · Windows · Linux &nbsp;—&nbsp; built with Tauri 2, Svelte 5 and Three.js
 
-[Download for macOS](https://github.com/mithun0524/puco/releases/latest) &nbsp;·&nbsp; [Build from source](#build-from-source)
+**[Download](https://github.com/mithun0524/puco/releases/latest)** &nbsp;·&nbsp; [Build from source](#build-from-source)
 
 <br />
 
@@ -50,12 +54,21 @@ macOS · Windows · Linux &nbsp;—&nbsp; built with Tauri 2, Svelte 5 and Three
 
 ## Install
 
-**macOS (Apple Silicon):** download the `.dmg` from the [latest release](https://github.com/mithun0524/puco/releases/latest) and drag Puco to Applications.
+Grab the file for your system from the [latest release](https://github.com/mithun0524/puco/releases/latest):
 
-Intel Macs, Windows and Linux: [build from source](#build-from-source); it's three commands.
+| System | File | Install |
+|---|---|---|
+| macOS (Intel or Apple Silicon) | `Puco_<version>_universal.dmg` | Drag Puco to Applications |
+| Windows 10/11 | `Puco_<version>_x64-setup.exe` or `.msi` | Run the installer |
+| Ubuntu / Debian | `Puco_<version>_amd64.deb` | `sudo apt install ./Puco_<version>_amd64.deb` |
+| Fedora | `Puco-<version>-1.x86_64.rpm` | `sudo dnf install ./Puco-<version>-1.x86_64.rpm` |
+| Any Linux | `Puco_<version>_amd64.AppImage` | `chmod +x` it, then run it |
 
-> Builds are unsigned, so on first launch macOS Gatekeeper and Windows SmartScreen will warn you.
-> On macOS, open Puco once, then go to System Settings → Privacy & Security and click **Open Anyway**.
+Puco lives in the menu bar / system tray, not the Dock or taskbar.
+
+The builds aren't code-signed yet, so each OS warns on first launch:
+- **macOS:** open Puco once, then go to System Settings → Privacy & Security and click **Open Anyway**.
+- **Windows:** on "Windows protected your PC", click **More info** → **Run anyway**.
 
 ## Build from source
 
@@ -91,8 +104,7 @@ The installers land in `src-tauri/target/release/bundle/`:
 | Linux | `appimage/*.AppImage`, `deb/*.deb`, `rpm/*.rpm` |
 
 Each OS builds only its own installers. The [Build workflow](.github/workflows/build.yml) builds
-all of them on GitHub Actions: push a `v*` tag to get a draft release with every installer attached,
-or run it by hand from the Actions tab to get them as downloadable artifacts.
+all of them on GitHub Actions; run it by hand from the Actions tab to get them as downloadable artifacts.
 
 For a universal macOS binary:
 
@@ -223,6 +235,12 @@ npm run build                  # bundle the UI
 - Keep it light: measure CPU and memory before and after anything that touches the frame loop.
 - New reactions go in the act table in `src/lib/bot3d.ts`.
 - To change the icon, edit `app-icon.svg`, then run `npm run icons`.
+
+### Releasing
+
+1. Bump `version` in `src-tauri/tauri.conf.json`, `src-tauri/Cargo.toml` and `package.json`.
+2. Commit, then `git tag vX.Y.Z && git push origin vX.Y.Z`.
+3. The Build workflow attaches every installer to a draft release. Review it and publish.
 
 ## License
 
