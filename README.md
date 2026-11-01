@@ -53,7 +53,9 @@ macOS · Windows · Linux &nbsp;—&nbsp; built with Tauri 2, Svelte 5 and Three
 
 ## Install
 
-Pre-built installers aren't published yet. [Build from source](#build-from-source); it's three commands.
+**macOS (Apple Silicon):** download the `.dmg` from the [latest release](https://github.com/mithun0524/puco/releases/latest) and drag Puco to Applications.
+
+Intel Macs, Windows and Linux: [build from source](#build-from-source); it's three commands.
 
 > Builds are unsigned, so on first launch macOS Gatekeeper and Windows SmartScreen will warn you.
 > On macOS, right-click `Puco.app` → **Open** once.
