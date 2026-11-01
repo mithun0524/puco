@@ -90,8 +90,9 @@ The installers land in `src-tauri/target/release/bundle/`:
 | Windows | `nsis/Puco_<version>_x64-setup.exe`, `msi/*.msi` |
 | Linux | `appimage/*.AppImage`, `deb/*.deb`, `rpm/*.rpm` |
 
-Each OS builds only its own installers, so use a CI matrix (for example
-[`tauri-apps/tauri-action`](https://github.com/tauri-apps/tauri-action)) to build all three.
+Each OS builds only its own installers. The [Build workflow](.github/workflows/build.yml) builds
+all of them on GitHub Actions: push a `v*` tag to get a draft release with every installer attached,
+or run it by hand from the Actions tab to get them as downloadable artifacts.
 
 For a universal macOS binary:
 
