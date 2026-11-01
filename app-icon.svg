@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- white vinyl body, lit from top-left -->
+    <radialGradient id="vinyl" cx="34%" cy="18%" r="95%">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.55" stop-color="#EEF1F5"/>
+      <stop offset="1" stop-color="#D3DAE4"/>
+    </radialGradient>
+    <!-- black glass screen -->
+    <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#151A22"/>
+      <stop offset="1" stop-color="#030406"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="drop" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#1B2333" flood-opacity="0.28"/>
+    </filter>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <clipPath id="screen"><rect x="262" y="300" width="500" height="404" rx="132"/></clipPath>
+  </defs>
+
+  <!-- macOS icon grid: 824 body on a 1024 canvas -->
+  <rect x="100" y="100" width="824" height="824" rx="186" fill="url(#vinyl)" filter="url(#drop)"/>
+  <rect x="100" y="100" width="824" height="824" rx="186" fill="none" stroke="#FFFFFF" stroke-opacity="0.9" stroke-width="3"/>
+
+  <!-- screen set into the body -->
+  <rect x="254" y="292" width="516" height="420" rx="140" fill="#C7CED9"/>
+  <rect x="262" y="300" width="500" height="404" rx="132" fill="url(#glass)"/>
+
+  <!-- LED eyes: bloom + core -->
+  <g fill="#5EC8FF">
+    <rect x="392" y="430" width="64" height="124" rx="32" filter="url(#glow)" opacity="0.85"/>
+    <rect x="568" y="430" width="64" height="124" rx="32" filter="url(#glow)" opacity="0.85"/>
+  </g>
+  <g fill="#BFEAFF">
+    <rect x="396" y="434" width="56" height="116" rx="28"/>
+    <rect x="572" y="434" width="56" height="116" rx="28"/>
+  </g>
+
+  <!-- glass reflection -->
+  <g clip-path="url(#screen)"><path d="M262 300 H762 V420 C620 380 420 410 262 520 Z" fill="url(#gloss)"/></g>
+</svg>

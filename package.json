@@ -1,0 +1,28 @@
+{
+  "name": "puco",
+  "license": "MIT",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "tauri": "tauri",
+    "icons": "tauri icon app-icon.svg"
+  },
+  "dependencies": {
+    "@fontsource-variable/recursive": "^5.3.0",
+    "@tauri-apps/api": "^2",
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^5",
+    "@tailwindcss/vite": "^4",
+    "@tauri-apps/cli": "^2",
+    "@types/three": "^0.187.0",
+    "svelte": "^5",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite": "^6"
+  }
+}

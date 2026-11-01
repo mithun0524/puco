@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Puco Island</title>
+    <style>
+      /*
+        Geometry is driven by the real notch (--nw × --nh, set from Rust at startup).
+        Rest:     exactly the notch → invisible against the camera housing.
+        Compact:  grows sideways; face in the left wing, value in the right wing (beside the camera).
+        Open:     grows down; the message sits *below* the notch line, never under the camera.
+      */
+      :root {
+        --nw: 200px;
+        --nh: 32px;
+        --wing: 58px;
+        --open-w: 420px;
+        --below: 54px;
+        --spring: cubic-bezier(0.25, 1.15, 0.4, 1);
+        --out: cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      @supports (transition-timing-function: linear(0, 1)) {
+        /* critically-ish damped spring: one gentle ~4% overshoot, no wobble */
+        :root { --spring: linear(0, 0.06 4%, 0.22 9%, 0.45 15%, 0.68 21%, 0.85 27%, 0.96 33%, 1.02 40%, 1.04 47%, 1.03 55%, 1.01 65%, 1 80%, 1); }
+      }
+      html, body { margin: 0; height: 100%; background: transparent; overflow: hidden; -webkit-user-select: none; user-select: none;
+        font-family: "Recursive Variable", ui-rounded, system-ui, sans-serif; font-variation-settings: "CASL" 0.6; -webkit-font-smoothing: antialiased; }
+
+      .island {
+        position: absolute; top: 0; left: 50%; translate: -50% 0;
+        width: var(--nw); height: var(--nh);
+        border-radius: 0 0 calc(var(--nh) * 0.32) calc(var(--nh) * 0.32);
+        background: #000;
+        transition: width 0.5s var(--spring), height 0.5s var(--spring), border-radius 0.5s var(--spring), box-shadow 0.5s var(--out), opacity 0.25s;
+      }
+      /* concave shoulders that melt into the menu bar */
+      .island::before, .island::after {
+        content: ""; position: absolute; top: 0; width: 8px; height: 8px;
+        background: radial-gradient(circle at var(--cx) 100%, transparent 7.5px, #000 8px);
+      }
+      .island::before { left: -8px; --cx: 0; }
+      .island::after { right: -8px; --cx: 100%; }
+
+      .island.compact { width: calc(var(--nw) + var(--wing) * 2); }
+      .island.open {
+        width: max(var(--open-w), calc(var(--nw) + var(--wing) * 2));
+        height: calc(var(--nh) + var(--below));
+        border-radius: 0 0 26px 26px;
+        box-shadow: 0 14px 34px -10px color-mix(in srgb, var(--tone) 60%, transparent);
+      }
+
+      /* wings: the strips left and right of the camera */
+      .wing { position: absolute; top: 0; height: var(--nh); width: var(--wing); display: grid; place-items: center; }
+      .wing.l { right: calc(50% + var(--nw) / 2); }
+      .wing.r { left: calc(50% + var(--nw) / 2); }
+      #face { width: 30px; height: 22px; }
+      #value { width: 46px; height: 18px; }
+
+      /* message: below the notch line */
+      .msg { position: absolute; left: 0; right: 0; top: var(--nh); height: var(--below); padding: 0 24px;
+        display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 2px; }
+      .title { font-size: 13px; font-weight: 720; color: #fff; letter-spacing: 0.005em; }
+      .title::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin: 0 7px 1px 0;
+        background: var(--tone); box-shadow: 0 0 8px var(--tone); vertical-align: middle; }
+      .body { font-size: 11.5px; font-weight: 480; color: rgb(220 228 240 / 0.62); max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+      .island.has-actions { --below: 88px; }
+      .actions { display: flex; gap: 8px; margin-top: 8px; }
+      .actions:empty { display: none; }
+      .act { font: inherit; font-size: 11px; font-weight: 700; padding: 5px 12px; border-radius: 999px; cursor: pointer;
+        border: 1px solid rgb(255 255 255 / 0.16); background: rgb(255 255 255 / 0.06); color: rgb(232 240 255 / 0.85);
+        transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.08s; }
+      .act:hover { background: rgb(255 255 255 / 0.12); }
+      .act:active { transform: scale(0.96); }
+      .act.primary { border-color: color-mix(in srgb, var(--tone) 65%, transparent); color: var(--tone); }
+      .act.armed { background: var(--tone); color: #000; border-color: var(--tone); }
+      .act:focus-visible { outline: 2px solid var(--tone); outline-offset: 2px; }
+
+      /* content arrives after the shape, leaves before it */
+      .wing, .msg { opacity: 0; filter: blur(4px); scale: 0.94; transition: opacity 0.14s var(--out), filter 0.14s var(--out), scale 0.14s var(--out); }
+      .island.compact .wing, .island.open .msg { opacity: 1; filter: blur(0); scale: 1; transition-duration: 0.32s; transition-delay: 0.16s; }
+      .island.swap .wing, .island.swap .msg { opacity: 0; filter: blur(4px); transition-duration: 0.12s; transition-delay: 0s; }
+
+      /* screens without a notch: a floating pill that fades in */
+      .no-notch .island { top: 6px; border-radius: 999px; opacity: 0; }
+      .no-notch .island::before, .no-notch .island::after { display: none; }
+      .no-notch .island.compact { opacity: 1; }
+      .no-notch .island.open { border-radius: 24px; }
+
+      @media (prefers-reduced-motion: reduce) {
+        .island, .wing, .msg { transition-duration: 0.01s !important; transition-delay: 0s !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="island" id="island" role="status" aria-live="polite">
+      <div class="wing l"><canvas id="face"></canvas></div>
+      <div class="wing r"><canvas id="value"></canvas></div>
+      <div class="msg"><div class="title" id="title"></div><div class="body" id="body"></div><div class="actions" id="actions"></div></div>
+    </div>
+    <script type="module" src="/src/island.ts"></script>
+  </body>
+</html>
