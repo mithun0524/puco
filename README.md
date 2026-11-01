@@ -55,7 +55,7 @@ macOS · Windows · Linux &nbsp;—&nbsp; built with Tauri 2, Svelte 5 and Three
 Intel Macs, Windows and Linux: [build from source](#build-from-source); it's three commands.
 
 > Builds are unsigned, so on first launch macOS Gatekeeper and Windows SmartScreen will warn you.
-> On macOS, right-click `Puco.app` → **Open** once.
+> On macOS, open Puco once, then go to System Settings → Privacy & Security and click **Open Anyway**.
 
 ## Build from source
 
