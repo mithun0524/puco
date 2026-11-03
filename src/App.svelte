@@ -10,6 +10,7 @@
   import { Flask, Hex, Spark, fit, heatColor, memPct, quip, type Layer, type Sample } from './lib/engine';
   import { LedLayer, ledText } from './lib/led';
   import { Bot } from './lib/bot3d';
+  import { play, soundOn, setSoundOn } from './lib/sound';
 
   type Prefs = { docked: boolean; locked: boolean; clickThrough: boolean };
   type PrefKey = 'docked' | 'locked' | 'click_through';
@@ -20,6 +21,7 @@
   let bubble = $state<{ id: number; text: string } | null>(null);
   let reply = $state<{ id: number; text: string; bad: boolean } | null>(null);
   let armed = $state<number | null>(null);
+  let sound = $state(soundOn());
   let tipBox = $state<{ text: string; x: number; y: number; below: boolean } | null>(null);
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -85,6 +87,11 @@
     }
   }
 
+  function toggleSound() {
+    setSoundOn((sound = !sound));
+    if (sound) play('wave');
+  }
+
   async function quit(pid: number, name: string) {
     if (armed !== pid) {
       armed = pid; // two-step confirm instead of a blocking dialog
@@ -135,6 +142,10 @@
 
   onMount(() => {
     const b = (bot = new Bot(cvGL));
+    b.onAct = (kind, byUser) => {
+      if (byUser || kind === 'startle' || kind === 'curious') play(kind); // idle life stays silent
+      if (byUser) invoke('haptic').catch(() => {}); // trackpad tap under your finger (macOS)
+    };
     const layers: { ctx: CanvasRenderingContext2D; w: number; h: number; g: Layer }[] = (
       [
         [cvDaemon, b],
@@ -207,6 +218,9 @@
         </button>
         <button class="key" aria-pressed={prefs.docked} aria-label="Open from the menu bar" use:tip={prefs.docked ? 'Float on the desktop instead' : 'Open from the menu bar instead'} onclick={() => setPref('docked', !prefs.docked)}>
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="4" rx="1" /><rect x="11" y="10" width="9" height="10" rx="2" /></svg><span class="led"></span>
+        </button>
+        <button class="key" aria-pressed={sound} aria-label="Sounds" use:tip={sound ? 'Turn sounds off' : 'Turn sounds on'} onclick={toggleSound}>
+          <svg viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" />{#if sound}<path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" />{:else}<path d="M16 9.5l5 5M21 9.5l-5 5" />{/if}</svg><span class="led"></span>
         </button>
         <button class="key" aria-pressed={prefs.clickThrough} aria-label="Let clicks pass through" use:tip={'Let clicks pass through'} onclick={() => setPref('click_through', true)}>
           <svg viewBox="0 0 24 24"><path d="M5 20V10a7 7 0 0 1 14 0v10l-2.3-2-2.3 2-2.4-2-2.4 2-2.3-2z" /><path d="M9.5 10.5h.01M14.5 10.5h.01" /></svg><span class="led"></span>

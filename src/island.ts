@@ -9,6 +9,7 @@ import { listen } from '@tauri-apps/api/event';
 import { invoke } from '@tauri-apps/api/core';
 import { getCurrentWindow, cursorPosition } from '@tauri-apps/api/window';
 import { Led, ledText } from './lib/led';
+import { play } from './lib/sound';
 import { LED, fit, memPct, moodOf, type Mood, type Sample } from './lib/engine';
 
 type Level = 'hot' | 'warn' | 'info';
@@ -55,6 +56,7 @@ function raise(h: HeadsUp) {
   if (dismissed.has(h.kind) || stickies.has(h.kind)) return;
   stickies.set(h.kind, h);
   if (topSticky() === h) openUntil = performance.now() + 6000; // announce, then settle into the live indicator
+  if (h.kind !== 'intro') play('chime');
   invoke('island_front').catch(() => {}); // re-pin above full-screen apps / after display changes
 }
 
